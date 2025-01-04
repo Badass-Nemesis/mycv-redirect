@@ -1,6 +1,6 @@
 import PleaseWait from "@/components/PleaseWait";
-import LoadingDiv from "@/components/LoadingDiv";
 import CatMemes from "@/components/CatMemes";
+import StatusLoading from "@/components/StatusLoading";
 
 export default function Home() {
   return (
@@ -11,7 +11,7 @@ export default function Home() {
             <PleaseWait />
           </div>
           <div className="bg-blue-500 flex items-center justify-center h-64 rounded-xl">
-            <LoadingDiv />
+            <StatusLoading />
           </div>
         </div>
         <div className="bg-pink-500 mt-4 min-h-[400px] rounded-xl flex items-center justify-center">
