@@ -29,19 +29,21 @@ export default function CatMemes() {
 
     return (
         <>
-            <div className="text-2xl font-semibold p-4">This is for Cat Memes </div>
-            <div className="grid grid-cols-3 gap-4">
-                {catImages.map((cat) => (
-                    <div key={cat._id} className="flex justify-center">
-                        <img
-                            src={`https://cataas.com/cat/${cat._id}`}
-                            alt="CatMeme"
-                            width={200}
-                            height={200}
-                            className="rounded-lg shadow-lg shadow-red-600"
-                        />
-                    </div>
-                ))}
+            <div className="bg-pink-500 mt-4 min-h-[400px] rounded-xl flex items-center justify-center">
+                <div className="text-2xl font-semibold p-4">This is for Cat Memes </div>
+                <div className="grid grid-cols-3 gap-4">
+                    {catImages.map((cat) => (
+                        <div key={cat._id} className="flex justify-center">
+                            <img
+                                src={`https://cataas.com/cat/${cat._id}`}
+                                alt="CatMeme"
+                                width={200}
+                                height={200}
+                                className="rounded-lg shadow-lg shadow-red-600"
+                            />
+                        </div>
+                    ))}
+                </div>
             </div>
         </>
     );
