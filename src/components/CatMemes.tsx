@@ -1,6 +1,6 @@
 'use client'
 
-import Image from "next/image";
+import Image from "next/image"; // slow net issues if I use this
 import { useEffect, useState } from "react";
 
 interface CatImage {
