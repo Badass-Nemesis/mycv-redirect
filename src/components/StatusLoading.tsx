@@ -14,17 +14,17 @@ export default function StatusLoading() {
     const [automaticRedirect, setAutomaticRedirect] = useState<boolean>(false);
 
     useEffect(() => {
-        const numberOfCalls = 5;
+        const numberOfCalls = 8;
 
         const callApiGateway = async () => {
-            while (true) {
+            for (let i = 0; i < numberOfCalls; i++) {
                 try {
                     const response = await fetch("/api/callApiGateway");
                     const data = (await response.json()) as StatusObject;
 
                     setMessage(data);
 
-                    if (data.body === '"The instance is running already."') {
+                    if (data.body === '"The instance is running already."' || i === (numberOfCalls - 1)) {
                         setRedirect(true);
                         break;
                     }
@@ -35,9 +35,10 @@ export default function StatusLoading() {
                     setError(error as Error);
                 }
             }
-        }
+        };
 
         callApiGateway();
+        // setRedirect(true);
     }, []);
 
     useEffect(() => {
