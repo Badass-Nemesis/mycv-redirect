@@ -14,7 +14,7 @@ export default function StatusLoading() {
     const [automaticRedirect, setAutomaticRedirect] = useState<boolean>(false);
 
     useEffect(() => {
-        const numberOfCalls = 5;
+        const numberOfCalls = 8;
 
         const callApiGateway = async () => {
             for (let i = 0; i < numberOfCalls; i++) {
@@ -24,7 +24,7 @@ export default function StatusLoading() {
 
                     setMessage(data);
 
-                    if (data.body === '"The instance is running already."') {
+                    if (data.body === '"The instance is running already."' || i === (numberOfCalls - 1)) {
                         setRedirect(true);
                         break;
                     }
@@ -35,7 +35,7 @@ export default function StatusLoading() {
                     setError(error as Error);
                 }
             }
-        }
+        };
 
         callApiGateway();
     }, []);
