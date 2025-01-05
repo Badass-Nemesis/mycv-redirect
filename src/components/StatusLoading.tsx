@@ -22,7 +22,7 @@ export default function StatusLoading() {
                     const response = await fetch("/api/callApiGateway");
                     const data = (await response.json()) as StatusObject;
 
-                    setMessage(data); // checking again 123 if vercel is gonna deploy main branch too or not
+                    setMessage(data);
 
                     if (data.body === '"The instance is running already."') {
                         setRedirect(true);
