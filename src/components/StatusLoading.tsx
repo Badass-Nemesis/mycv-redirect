@@ -17,7 +17,7 @@ export default function StatusLoading() {
         const numberOfCalls = 5;
 
         const callApiGateway = async () => {
-            for (let i = 0; i < numberOfCalls; i++) {
+            while (true) {
                 try {
                     const response = await fetch("/api/callApiGateway");
                     const data = (await response.json()) as StatusObject;
