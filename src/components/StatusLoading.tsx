@@ -22,12 +22,12 @@ export default function StatusLoading() {
                     const response = await fetch("/api/callApiGateway");
                     const data = (await response.json()) as StatusObject;
 
+                    setMessage(data);
+
                     if (data.body === '"The instance is running already."') {
                         setRedirect(true);
                         break;
                     }
-
-                    setMessage(data);
 
                     await new Promise(resolve => setTimeout(resolve, 8000));
                 } catch (error) {
@@ -54,7 +54,7 @@ export default function StatusLoading() {
 
     return (
         <>
-            <div className="bg-blue-500 flex flex-col items-center justify-center h-64 rounded-xl gap-4">
+            <div className="bg-blue-500 flex flex-col items-center justify-center h-64 rounded-xl gap-4 p-2">
                 <div className="text-2xl font-semibold text-center">{message ? (
                     (message.body === '"An error happened in handler function. Please check logs."') ?
                         <p>
