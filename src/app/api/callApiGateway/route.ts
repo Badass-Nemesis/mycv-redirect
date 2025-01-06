@@ -10,6 +10,7 @@ export async function GET() {
         });
 
         if (!response.ok) {
+            console.error(response); // aisehi
             throw new Error("The API network response was not ok");
         }
 
@@ -18,6 +19,6 @@ export async function GET() {
         return NextResponse.json(data);
     } catch (error: any) {
         console.error('Error calling API Gateway: ', error);
-        return NextResponse.json({ error: error.message });
+        return NextResponse.json({ statusCode: 500, body: error.message });
     }
 }

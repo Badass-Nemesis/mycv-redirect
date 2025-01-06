@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react";
+import Timer from "./Timer";
 
 interface StatusObject {
     statusCode: string,
@@ -12,46 +13,41 @@ export default function StatusLoading() {
     const [error, setError] = useState<Error>();
     const [redirect, setRedirect] = useState<boolean>(false);
     const [automaticRedirect, setAutomaticRedirect] = useState<boolean>(false);
+    const [timer, setTimer] = useState<number>(120);
 
     useEffect(() => {
-        const numberOfCalls = 8;
-
         const callApiGateway = async () => {
-            for (let i = 0; i < numberOfCalls; i++) {
-                try {
-                    const response = await fetch("/api/callApiGateway");
-                    const data = (await response.json()) as StatusObject;
+            try {
+                const response = await fetch("/api/callApiGateway");
+                const data = (await response.json()) as StatusObject;
 
-                    setMessage(data);
+                setMessage(data);
 
-                    if (data.body === '"The instance is running already."' || i === (numberOfCalls - 1)) {
+                if (data.body) {
+                    if (data.body === '"The instance is running already."') {
+                        setTimer(5);
                         setRedirect(true);
-                        break;
+                    } else if (data.body === '"An error happened in handler function. Please check logs."'
+                        || "The API network response was not ok") {
+                        setTimer(prev => prev + 10);
                     }
-
-                    await new Promise(resolve => setTimeout(resolve, 8000));
-                } catch (error) {
-                    console.error("Error: ", error);
-                    setError(error as Error);
+                } else {
+                    console.log(`why no body? data: ${JSON.stringify(data)}`);
                 }
+
+                setTimeout(callApiGateway, 8000); // every 8 seconds
+            } catch (error) {
+                console.error("Error in callApiGateway: ", error);
+                setError(error as Error);
+
+                setTimeout(callApiGateway, 8000); // every 8 seconds
             }
         };
 
         callApiGateway();
-        // setRedirect(true);
     }, []);
 
-    useEffect(() => {
-        if (redirect) {
-            const delayAndRedirect = async () => {
-                await new Promise(resolve => setTimeout(resolve, 5000));
-                setAutomaticRedirect(true);
-                window.location.href = process.env.NEXT_PUBLIC_REDIRECT_URL!;
-            }
-
-            delayAndRedirect();
-        }
-    }, [redirect]);
+    const toggleAutoRedirect = () => setAutomaticRedirect(true);
 
     return (
         <>
@@ -61,23 +57,26 @@ export default function StatusLoading() {
                         <p>
                             An error happened because of DNS propagation. Don't worry it'll get fixed
                             automatically in 60-90 seconds.
-                            <br />
-                            This happens due to taking time in setting domain's DNS (basically IP
-                            address of server and domain aren't fully connected in the internet). It takes time
-                            to set the server's ip address in all regions.
                         </p>
                         : message.body)
                     : <p>Still Loading..</p>}</div>
                 {error && (<div className="text-2xl font-semibold ">{error.message}</div>)}
-                {redirect && (<div className="text-2xl font-semibold ">You will be redirected now in 5 seconds...</div>)}
+                {redirect ? (<div className="flex flex-row text-2xl font-semibold">You will be redirected in&nbsp;
+                    {<Timer duration={timer} autoRedirect={toggleAutoRedirect} />}
+                    &nbsp;seconds...</div>
+                ) : (<div className="flex flex-row text-2xl font-semibold">Initializing, Please wait for&nbsp;
+                    {<Timer duration={timer} autoRedirect={toggleAutoRedirect} />}
+                    &nbsp;seconds...</div>
+                )}
                 {automaticRedirect && (
                     <button
                         onClick={() => { window.location.href = process.env.NEXT_PUBLIC_REDIRECT_URL! }}
-                        className="rounded-lg bg-yellow-500 px-4 py-6"
+                        className="rounded-lg bg-yellow-500 px-3 py-2"
                     >
                         If you aren't redirected then click me
                     </button>
                 )}
+
             </div>
         </>
     );
