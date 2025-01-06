@@ -38,6 +38,7 @@ export default function StatusLoading() {
         };
 
         callApiGateway();
+        // setRedirect(true);
     }, []);
 
     useEffect(() => {
