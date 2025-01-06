@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface CollapsibleSectionProps {
     title: string;
@@ -13,9 +14,30 @@ export default function CollapsibleSection({ title, children }: CollapsibleSecti
     const toggleOpen = () => setIsOpen(!isOpen);
 
     return (
-        <section>
-            <p onClick={toggleOpen} className="cursor-pointer bg-slate-200/65 rounded-xl px-4 py-2">{title}</p>
-            {isOpen && <div className="bg-slate-100/50 m-2 p-3 rounded-xl">{children}</div>}
+        <section className="bg-slate-200/20 rounded-xl">
+            <motion.p
+                onClick={toggleOpen}
+                className={`cursor-pointer bg-slate-600/65 rounded-xl px-4 py-2 font-mono 
+                    ${isOpen && 'rounded-b-none text-center'}`}
+                initial={{ opacity: 1, width: "auto" }}
+                animate={{ y: isOpen ? 0 : 10, width: isOpen ? "full" : "auto" }}
+                transition={{ duration: 0.3 }}
+            >
+                {title}
+            </motion.p>
+            <AnimatePresence initial={false}>
+                {isOpen && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.6 }}
+                        className="overflow-hidden bg-slate-500/50 m-2 p-3 rounded-xl leading-snug font-serif"
+                    >
+                        {children}
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </section>
     );
 }
