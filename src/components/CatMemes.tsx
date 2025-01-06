@@ -1,19 +1,15 @@
-'use client'
-
-import Image from "next/image"; // slow net issues if I use this
-import { useEffect, useState } from "react";
 import CatImage from "./CatImage";
 
 export default function CatMemes() {
-
-
     return (
         <>
-            <div className="bg-pink-500 mt-4 min-h-[400px] rounded-xl flex items-center justify-center gap-4">
-                <div className="text-2xl font-semibold">This is for Cat Memes </div>
-                <CatImage />
-                <CatImage />
-                <CatImage />
+            <div className="bg-pink-500 mt-4 min-h-40 md:min-h-[300px] rounded-xl flex flex-col items-center justify-center gap-4 px-2 py-4">
+                <div className="text-base md:text-xl font-mono font-semibold">Enjoy some cat pics </div>
+                <div className="flex flex-col md:flex-row gap-4">
+                    <CatImage />
+                    <div className="hidden md:inline-block"><CatImage /></div>
+                    <div className="hidden md:inline-block"><CatImage /></div>
+                </div>
             </div>
         </>
     );

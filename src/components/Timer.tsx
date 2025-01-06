@@ -34,7 +34,7 @@ export default function Timer({ duration, autoRedirect }: TimerProps) {
 
     return (
         <>
-            <div className="text-2xl font-semibold">{timeLeft}</div>
+            <div className="text-sm md:text-xl font-semibold">{timeLeft}</div>
         </>
     );
 }
