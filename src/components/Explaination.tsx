@@ -21,7 +21,7 @@ export default function Explaination() {
                         here you are, witnessing the <span className="italic text-gray-100">jankiest solution</span> that my dumba$$ brain made.</p>
                 </CollapsibleSection>
                 <br />
-                <CollapsibleSection title="What the hell is happening here?">
+                <CollapsibleSection title="What the hell is happening here? -&gt;">
                     <p>Don't worry, let me tell you all a story about <s className="text-red-300">a mouse
                         named Dolory</s>, ughm... I mean this janky redirect thing. So to minimize my EC2 instance's
                         usage I had to basically stop the instance. For that, I decided to use AWS' <span className="font-bold text-yellow-300">lambda functions</span>
@@ -34,17 +34,19 @@ export default function Explaination() {
                 </CollapsibleSection>
                 <br />
                 <CollapsibleSection title="Errors and Challenges -&gt;">
-                    <p>There are many points of failures and errors because this is basically
-                        a hotfix for this issue. I could've used ElasticIP in AWS, could've bought a cheap VPS, could've
-                        done something entirely different which would've made my life easier, but I like to have some
-                        challenges. And besides all of the things I thought of would require paying for the services,
-                        and I don't want that. The most annoying error is the <span className="font-bold bg-red-200 text-red-900 px-1 rounded">"404 (002) pixie proxy" error</span> (learn more).
-                        And I don't have any control over this error. It'll take around <span className="font-semibold text-red-700">60-90 seconds</span> to automatically
-                        get fixed, and if it's not fixed then you have to <span className="font-semibold underline text-gray-900">clear your cache/site data</span>, and do ipflushdns
-                        command, and restart your modem/router, etc etc. Basically, you would have to either open my CV
-                        domain in incognito mode once or on another device altogether. Because <span className="underline text-blue-400">DNS propagation</span> sometimes
-                        just straight up sucks, and mix some magic of caching with it and you get an unbeatable final
-                        level boss error.</p>
+                    <p>There are many points of failures and errors because this is basically a hotfix for this issue. I could've
+                        used ElasticIP in AWS, could've bought a cheap VPS, could've done something entirely different which would've
+                        made my life easier, but I like to have some challenges. And besides all of the things I thought of would
+                        require paying for the services, and I don't want that. The most annoying error is the
+                        <span className="font-bold bg-red-200 text-red-900 px-1 rounded">"404 (002) pixie proxy" error</span>
+                        <a href="https://www.reddit.com/r/PinoyProgrammer/comments/1daiwqm/404_002_pixie_proxy_porkbun_vercel/"
+                            className="bg-blue-500 hover:underline">(click me to learn more)</a>. And I don't have any control over this error.
+                        It'll take around <span className="font-semibold text-red-700">60-90 seconds</span> to automatically get
+                        fixed, and if it's not fixed then you have to <span className="font-semibold underline text-gray-900">clear
+                            your cache/site data</span>, and do ipflushdns command, and restart your modem/router, etc etc. Basically,
+                        you would have to either open my CV domain in incognito mode once or on another device altogether. Because
+                        <span className="underline text-blue-400">DNS propagation</span> sometimes just straight up sucks, and mix
+                        some magic of caching with it and you get an unbeatable final level boss error.</p>
                 </CollapsibleSection>
                 <br />
                 <CollapsibleSection title="Final words -&gt;">

@@ -17,7 +17,7 @@ export default function CollapsibleSection({ title, children }: CollapsibleSecti
         <section className="bg-slate-200/20 rounded-xl">
             <motion.p
                 onClick={toggleOpen}
-                className={`cursor-pointer bg-slate-600/65 rounded-xl px-4 py-2 font-mono 
+                className={`cursor-pointer bg-slate-600/65 rounded-xl px-4 py-2 text-sm md:text-base font-mono font-semibold 
                     ${isOpen && 'rounded-b-none text-center'}`}
                 initial={{ opacity: 1, width: "auto" }}
                 animate={{ y: isOpen ? 0 : 10, width: isOpen ? "full" : "auto" }}
@@ -32,7 +32,7 @@ export default function CollapsibleSection({ title, children }: CollapsibleSecti
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.6 }}
-                        className="overflow-hidden bg-slate-500/50 m-2 p-3 rounded-xl leading-snug font-serif"
+                        className="overflow-hidden bg-slate-500/50 m-2 p-3 rounded-xl text-sm md:text-base leading-snug font-serif"
                     >
                         {children}
                     </motion.div>
