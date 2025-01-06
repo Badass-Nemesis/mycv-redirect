@@ -13,7 +13,7 @@ export default function RedirectStatusLoading() {
     const [error, setError] = useState<Error>();
     const [redirect, setRedirect] = useState<boolean>(false);
     const [automaticRedirect, setAutomaticRedirect] = useState<boolean>(false);
-    const [timer, setTimer] = useState<number>(2);
+    const [timer, setTimer] = useState<number>(120);
 
     useEffect(() => {
         const callApiGateway = async () => {
