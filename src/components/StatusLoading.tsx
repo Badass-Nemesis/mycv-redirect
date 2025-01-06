@@ -51,7 +51,7 @@ export default function StatusLoading() {
 
     return (
         <>
-            <div className="bg-blue-500 flex flex-col items-center justify-center h-64 rounded-xl gap-4 p-2">
+            <div className="bg-blue-500 flex flex-col items-center justify-center min-h-64 rounded-xl gap-4 p-2">
                 <div className="text-2xl font-semibold text-center">{message ? (
                     (message.body === '"An error happened in handler function. Please check logs."') ?
                         <p>
@@ -76,7 +76,6 @@ export default function StatusLoading() {
                         If you aren't redirected then click me
                     </button>
                 )}
-
             </div>
         </>
     );
