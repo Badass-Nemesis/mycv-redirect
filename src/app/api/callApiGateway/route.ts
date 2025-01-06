@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const maxDuration = 35;
+
 export async function GET() {
     try {
         const response = await fetch(process.env.AWS_API_GATEWAY_ENDPOINT!, {
