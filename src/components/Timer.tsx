@@ -15,6 +15,8 @@ export default function Timer({ duration, autoRedirect }: TimerProps) {
     }
 
     useEffect(() => {
+        setTimeLeft(duration); // important because I want to change the time after getting instance is running
+
         const interval = setInterval(() => {
             setTimeLeft((prev) => {
                 if (prev > 1) {
@@ -25,12 +27,11 @@ export default function Timer({ duration, autoRedirect }: TimerProps) {
                     redirectToUrl();
                     return 0;
                 }
-
-            })
+            });
         }, 1000); // every 1 second
 
         return () => clearInterval(interval);
-    }, [duration])
+    }, [duration]);
 
     return (
         <>

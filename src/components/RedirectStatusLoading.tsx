@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Timer from "./Timer";
 
 interface StatusObject {
@@ -17,30 +17,33 @@ export default function RedirectStatusLoading() {
 
     useEffect(() => {
         const callApiGateway = async () => {
-            try {
-                const response = await fetch("/api/callApiGateway");
-                const data = (await response.json()) as StatusObject;
+            while (true) {
+                try {
+                    const response = await fetch("/api/callApiGateway");
+                    const data = (await response.json()) as StatusObject;
 
-                setMessage(data);
+                    setMessage(data);
 
-                if (data.body) {
-                    if (data.body === '"The instance is running already."') {
-                        setTimer(5);
-                        setRedirect(true);
-                    } else if (data.body === '"An error happened in handler function. Please check logs."' ||
-                        "The API network response was not ok") {
-                        setTimer(prev => prev + 10);
+                    if (data.body) {
+                        if (data.body === '"The instance is running already."') {
+                            setTimer(5);
+                            setRedirect(true);
+                            break;
+                        } else if (data.body === '"An error happened in handler function. Please check logs."' ||
+                            data.body === "The API network response was not ok") {
+                            setTimer(prev => prev + 10);
+                        }
+                    } else {
+                        console.log(`why no body? data: ${JSON.stringify(data)}`);
                     }
-                } else {
-                    console.log(`why no body? data: ${JSON.stringify(data)}`);
+
+                    await new Promise(resolve => setTimeout(resolve, 8000)); // every 8 seconds
+                } catch (error) {
+                    console.error("Error in callApiGateway: ", error);
+                    setError(error as Error);
+
+                    await new Promise(resolve => setTimeout(resolve, 8000)); // every 8 seconds
                 }
-
-                setTimeout(callApiGateway, 8000); // every 8 seconds
-            } catch (error) {
-                console.error("Error in callApiGateway: ", error);
-                setError(error as Error);
-
-                setTimeout(callApiGateway, 8000); // every 8 seconds
             }
         };
 
@@ -61,13 +64,10 @@ export default function RedirectStatusLoading() {
                         : message.body)
                     : <p>Still Loading..</p>}</div>
                 {error && (<div className="text-sm md:text-xl font-semibold ">{error.message}</div>)}
-                {redirect ? (<div className="flex flex-row text-sm md:text-xl font-semibold">You will be redirected in&nbsp;
-                    {<Timer duration={timer} autoRedirect={toggleAutoRedirect} />}
-                    &nbsp;seconds...</div>
-                ) : (<div className="flex flex-row text-sm md:text-xl font-semibold">Initializing, Please wait for&nbsp;
-                    {<Timer duration={timer} autoRedirect={toggleAutoRedirect} />}
-                    &nbsp;seconds...</div>
-                )}
+                <div className="flex flex-row text-sm md:text-xl font-semibold">
+                    {redirect ? <span>You will be redirected in&nbsp;</span> : <span>Initializing, Please wait for&nbsp;</span>}
+                    {<Timer duration={timer} autoRedirect={toggleAutoRedirect} />}&nbsp;seconds...
+                </div>
                 {automaticRedirect && (
                     <button
                         onClick={() => { window.location.href = process.env.NEXT_PUBLIC_REDIRECT_URL! }}
