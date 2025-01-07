@@ -38,7 +38,7 @@ export default function RedirectStatusLoading() {
 
     useEffect(() => {
         const callApiGateway = async () => {
-            const maxNumberOfSuccessfullCalls = 2;
+            const maxNumberOfSuccessfullCalls = 10;
             let numberOfSuccessfullCalls = 0;
 
             while (true) {
