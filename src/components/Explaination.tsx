@@ -5,7 +5,7 @@ import CollapsibleSection from "./CollapsibleSection"
 export default function Explaination() {
     return (
         <>
-            <div className="bg-green-500 flex flex-col items-start min-h-64 rounded-xl px-3 py-5 gap-3">
+            <div className="bg-green-500 flex flex-col items-start min-h-64 rounded-xl px-3 pt-3 md:py-5 md:gap-3">
                 <CollapsibleSection title="Explanation for this dumba$$ redirect thing -&gt;">
                     <p>As you know that AWS gives a <span className="font-bold text-yellow-300">generous free tier for 12 months</span>, and one of my seniors told me to deploy something online,
                         so I created an AWS account. After verification, I was given those <span className="font-bold text-yellow-300">sweet 720hrs of free tier EC2 instance</span>, and immediately coded & deployed my CV. But little did I know that 720hrs are gonna go poof soon.</p>

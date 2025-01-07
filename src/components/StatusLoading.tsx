@@ -19,7 +19,7 @@ export default function App() {
             )}
             <button
                 onClick={toggleRedirectStatusLoading}
-                className="mt-4 rounded-lg bg-red-500 px-3 py-2 text-sm md:text-xl font-mono font-semibold tracking-tighter"
+                className="mt-4 rounded-lg bg-red-500 px-3 py-2 text-sm md:text-xl font-mono font-bold md:font-semibold tracking-tighter"
             >
                 {showRedirectStatusLoading ? 'Stop Redirect Process' : 'Start Redirect Process'}
             </button>
