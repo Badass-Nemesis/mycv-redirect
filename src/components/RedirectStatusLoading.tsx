@@ -12,7 +12,7 @@ export default function RedirectStatusLoading() {
     const [error, setError] = useState<Error | { message: string }>();
     const [redirect, setRedirect] = useState<boolean>(false);
     const [automaticRedirect, setAutomaticRedirect] = useState<boolean>(false);
-    const [timeLeft, setTimeLeft] = useState<number>(120);
+    const [timeLeft, setTimeLeft] = useState<number>(240);
 
     const toggleAutoRedirect = () => setAutomaticRedirect(true);
     const redirectToUrl = () => {
@@ -38,7 +38,7 @@ export default function RedirectStatusLoading() {
 
     useEffect(() => {
         const callApiGateway = async () => {
-            const maxNumberOfSuccessfullCalls = 2;
+            const maxNumberOfSuccessfullCalls = 10;
             let numberOfSuccessfullCalls = 0;
 
             while (true) {
@@ -86,7 +86,7 @@ export default function RedirectStatusLoading() {
     return (
         <>
             <div className="bg-blue-500 flex flex-col items-center justify-center min-h-35 rounded-xl gap-4 md:mb-2">
-                <div className="text-sm md:text-xl font-semibold text-center">{message ? (
+                <div className="text-sm md:text-xl font-semibold text-center">{(!error && message) ? (
                     (message.body === '"An error happened in handler function. Please check logs."'
                         || message.statusCode === 500) ?
                         <p>
