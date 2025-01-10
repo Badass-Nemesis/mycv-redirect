@@ -36,51 +36,78 @@ export default function RedirectStatusLoading() {
         return () => clearInterval(interval);
     }, [timeLeft]);
 
+    // THIS IS THE MAIN BOSS. THE MAIN USE EFFECT. TREAT IT WITH CARE
     useEffect(() => {
+        // using controller and a boolean flag now to ensure I'll not be calling api automatically when unmounted
+        const abortController = new AbortController();
+        let isMounted = true;
+
+        // I was frustrated to see the increase timeLeft by 10 secs code in every if block
+        const handleError = (errorMessage: string) => {
+            setError({ message: errorMessage });
+            setTimeLeft(prev => prev + 10);
+        };
+
         const callApiGateway = async () => {
             const maxNumberOfSuccessfullCalls = 10;
             let numberOfSuccessfullCalls = 0;
 
-            while (true) {
+            while (isMounted && numberOfSuccessfullCalls < maxNumberOfSuccessfullCalls) {
                 try {
-                    const response = await fetch("/api/callApiGateway");
+                    const response = await fetch("/api/callApiGateway", {
+                        signal: abortController.signal, // passing the signal to fetch so that I can abort it when wanted
+                    });
                     const data = (await response.json()) as StatusObject;
+
+                    if (!isMounted) return; // just simply exit if the component is unmounted
 
                     setMessage(data);
 
                     if (data.body) {
                         if (data.body === '"The instance is running already."' ||
                             numberOfSuccessfullCalls >= maxNumberOfSuccessfullCalls) {
-                            setTimeLeft(60);
+                            setTimeLeft(100);
                             setRedirect(true);
                             break;
                         } else if (data.body === '"An error happened in handler function. Please check logs."' ||
                             data.body === "The API network response was not ok") {
-                            setError({ message: "API response was not ok, Or the lambda function dropped dead" })
-                            setTimeLeft(prev => prev + 10);
+                            handleError("API response was not ok, Or the lambda function dropped dead");
                         }
                     } else if (data.statusCode && data.statusCode === 500) {
-                        setError({ message: "The lambda function dropped dead" })
-                        setTimeLeft(prev => prev + 10);
+                        handleError("The lambda function dropped dead");
                     } else {
                         console.log(`why no body? data: ${JSON.stringify(data)}`);
-                        setError({ message: "No body found in the response of lambda function" })
-                        setTimeLeft(prev => prev + 10);
+                        handleError("No body found in the response of lambda function");
                     }
 
                     numberOfSuccessfullCalls++;
-                    await new Promise(resolve => setTimeout(resolve, 8000)); // every 8 seconds
                 } catch (error) {
-                    console.error("Error in callApiGateway: ", error);
-                    setError(error as Error);
+                    if (!isMounted) return; // need one isMounted check here too
 
-                    setTimeLeft(prev => prev + 10);
-                    await new Promise(resolve => setTimeout(resolve, 8000)); // every 8 seconds
+                    if (error instanceof Error) {
+                        if (error.name !== "AbortError") {
+                            console.error("Error in callApiGateway: ", error);
+                            handleError(error.message);
+                        }
+                    } else {
+                        console.error("Unknown error in callApiGateway: ", error);
+                        handleError("An unknown error occurred");
+                    }
+                }
+
+                if (isMounted) {
+                    await new Promise(resolve => setTimeout(resolve, 8000)); // waiting 8 sec before next call
                 }
             }
         };
 
         callApiGateway();
+
+        // this is a cleanup function activated when unmounted
+        return () => {
+            isMounted = false;
+            abortController.abort();
+        };
     }, []);
 
     return (
